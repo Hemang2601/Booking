@@ -13,7 +13,7 @@
         android:layout_centerInParent="true"
         android:text="User ID: "
         android:textSize="18sp"
-        android:visibility="visible"/>
+        android:visibility="gone" />
 
 
 
@@ -84,6 +84,16 @@
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_below="@id/appointmentCardView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="250dp"
+            android:layout_centerInParent="true"
+            android:visibility="visible"
+            style="@style/Widget.AppCompat.ProgressBar" />
+
 
         <androidx.cardview.widget.CardView
             android:id="@+id/profileCardView"
@@ -94,17 +104,10 @@
             android:layout_marginHorizontal="16dp"
             app:cardCornerRadius="20dp"
             app:cardElevation="10dp"
+            android:visibility="gone"
             android:layout_margin="10dp">
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="200dp"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center_horizontal"
-                android:visibility="visible"
-                style="@style/Widget.AppCompat.ProgressBar" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"

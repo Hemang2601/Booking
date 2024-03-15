@@ -1,9 +1,11 @@
 package com.example.booking;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -28,7 +30,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private TextView userIdTextView;
     private TextView helloUsernameTextView;
-    private TextView nameTextView, emailTextView, phoneTextView, addressTextView;
+    private TextView nameTextView, emailTextView, phoneTextView, addressTextView,newPasswordLabelTextView;
     private EditText newPasswordEditText;
     private Button changePasswordButton;
     private ProgressBar progressBar;
@@ -46,6 +48,7 @@ public class ProfileActivity extends AppCompatActivity {
         emailTextView = findViewById(R.id.emailTextView);
         phoneTextView = findViewById(R.id.phoneTextView);
         addressTextView = findViewById(R.id.addressTextView);
+        newPasswordLabelTextView = findViewById(R.id.newPasswordLabelTextView);
         newPasswordEditText = findViewById(R.id.newPasswordEditText);
         changePasswordButton = findViewById(R.id.changePasswordButton);
         progressBar = findViewById(R.id.progressBar);
@@ -68,9 +71,23 @@ public class ProfileActivity extends AppCompatActivity {
         changePasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changePassword();
+                // Get user_id from Intent extras
+                String userId = getIntent().getStringExtra("user_id");
+
+                // Get the new password from the EditText
+                String newPassword = newPasswordEditText.getText().toString().trim();
+
+                // Check if the new password is not empty
+                if (!TextUtils.isEmpty(newPassword)) {
+                    // Call the changePassword function
+                    changePassword(userId, newPassword);
+                } else {
+                    // Show a message to the user indicating that the new password is empty
+                    Toast.makeText(ProfileActivity.this, "Please enter a new password", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
     }
 
     private String capitalizeEachWord(String text) {
@@ -138,6 +155,7 @@ public class ProfileActivity extends AppCompatActivity {
                             Log.d("UserData", "Email: " + email);
                             Log.d("UserData", "Phone Number: " + phoneNumber);
                             Log.d("UserData", "Address: " + address);
+                            findViewById(R.id.profileCardView).setVisibility(View.VISIBLE);
                         } else {
                             // Handle the case where "user_id" key is missing in the JSON response
                             Log.e("UserData", "No user_id found in JSON response");
@@ -162,23 +180,51 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void changePassword() {
-        Log.d(TAG, "changePassword: Changing password");
+    private void changePassword(String userId, String newPassword) {
+        // Show progress bar
+        progressBar.setVisibility(View.VISIBLE);
 
-        String newPassword = newPasswordEditText.getText().toString().trim();
+        // Create an instance of ApiService
+        ApiService apiService = RetrofitClient.getRetrofitInstance().create(ApiService.class);
 
-        // Validate new password
-        if (newPassword.isEmpty()) {
-            Toast.makeText(this, "Please enter a new password", Toast.LENGTH_SHORT).show();
-            Log.d(TAG, "changePassword: New password is empty");
-            return;
-        }
+        // Create a request object with user id and new password
+        UserIdPasswordRequest request = new UserIdPasswordRequest(userId, newPassword);
 
-        // Implement your logic to change password (e.g., API call)
+        // Make the API call to change password
+        Call<ResponseBody> call = apiService.changePassword(request);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                // Hide progress bar
+                progressBar.setVisibility(View.GONE);
 
-        // After successful password change, you may clear the EditText
-        newPasswordEditText.setText("");
-        Toast.makeText(this, "Password changed successfully", Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "changePassword: Password changed successfully");
+                if (response.isSuccessful()) {
+                    // Password changed successfully
+                    Toast.makeText(ProfileActivity.this, "Password changed successfully", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "Password changed successfully");
+
+                    // Make the change password field visible again
+                    newPasswordLabelTextView.setVisibility(View.GONE);
+                    newPasswordEditText.setVisibility(View.GONE);
+                    changePasswordButton.setVisibility(View.GONE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(newPasswordEditText.getWindowToken(), 0);
+                } else {
+                    // Handle error response
+                    Toast.makeText(ProfileActivity.this, "Failed to change password", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Failed to change password: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                // Hide progress bar
+                progressBar.setVisibility(View.GONE);
+
+                // Handle failure, such as network issues
+                Toast.makeText(ProfileActivity.this, "Network error", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Network error", t);
+            }
+        });
     }
 }

@@ -13,7 +13,7 @@
         android:layout_centerInParent="true"
         android:text="User ID: "
         android:textSize="18sp"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -82,15 +82,179 @@
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
-
-
-        <!-- RecyclerView for appointment items -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/appointmentRecyclerView"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/appointmentformCardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/appointmentCardView"
-            android:layout_marginTop="16dp"/>
+            android:visibility="visible"
+            app:cardCornerRadius="20dp"
+            app:cardPreventCornerOverlap="true"
+            android:layout_marginBottom="4dp"
+            android:layout_margin="20dp"
+            android:elevation="20dp">
+
+        <!-- Contents inside the CardView -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <!-- Type of Transaction Label with icon -->
+            <TextView
+                android:id="@+id/typeOfTransactionLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Type of Transaction"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:drawableStart="@drawable/transaction"
+                android:drawablePadding="8dp"
+                android:paddingStart="8dp"
+                android:gravity="center_vertical"/>
+
+            <!-- Checkboxes for Transaction Types -->
+            <CheckBox
+                android:id="@+id/checkBoxDeposit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Deposit"
+                android:layout_below="@id/typeOfTransactionLabel"
+                android:layout_marginTop="8dp"/>
+
+            <CheckBox
+                android:id="@+id/checkBoxWithdraw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Withdraw"
+                android:layout_below="@id/checkBoxDeposit"
+                android:layout_marginTop="8dp"/>
+
+            <CheckBox
+                android:id="@+id/checkBoxPassbook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Passbook"
+                android:layout_below="@id/checkBoxWithdraw"
+                android:layout_marginTop="8dp"/>
+
+            <CheckBox
+                android:id="@+id/checkBoxPrinting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Printing Passbook"
+                android:layout_below="@id/checkBoxPassbook"
+                android:layout_marginTop="8dp"/>
+
+            <CheckBox
+                android:id="@+id/checkBoxIPO"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="IPO"
+                android:layout_below="@id/checkBoxPrinting"
+                android:layout_marginTop="8dp"/>
+
+            <CheckBox
+                android:id="@+id/checkBoxLoan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Loan"
+                android:layout_below="@id/checkBoxIPO"
+                android:layout_marginTop="8dp"/>
+
+            <CheckBox
+                android:id="@+id/checkBoxShare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Share"
+                android:layout_below="@id/checkBoxLoan"
+                android:layout_marginTop="8dp"/>
+
+            <!-- Date Selection with icon -->
+            <TextView
+                android:id="@+id/dateLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Date"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:drawableStart="@drawable/calendar"
+                android:drawablePadding="8dp"
+                android:paddingStart="8dp"
+                android:gravity="center_vertical"
+                android:layout_below="@id/checkBoxShare"
+                android:layout_marginTop="16dp"/>
+
+            <Button
+                android:id="@+id/dateButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Date"
+                android:layout_below="@+id/checkBoxShare"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="200dp"
+                />
+
+            <!-- Time Selection with icon -->
+            <TextView
+                android:id="@+id/timeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Time"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:drawableStart="@drawable/clock"
+                android:drawablePadding="8dp"
+                android:paddingStart="8dp"
+                android:gravity="center_vertical"
+                android:layout_below="@id/dateButton"
+                android:layout_marginTop="16dp"/>
+
+            <Button
+                android:id="@+id/timeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Time"
+                android:layout_below="@id/dateButton"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="200dp"/>
+
+            <!-- Bank Selection Dropdown with icon -->
+            <TextView
+                android:id="@+id/bankLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Bank"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:drawableStart="@drawable/bank"
+                android:drawablePadding="8dp"
+                android:paddingStart="8dp"
+                android:gravity="center_vertical"
+                android:layout_below="@id/timeButton"
+                android:layout_marginTop="16dp"/>
+
+            <Spinner
+                android:id="@+id/bankSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/bankLabel"
+                android:layout_marginTop="8dp"/>
+
+            <Button
+                android:id="@+id/appointmentButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Book Appointment"
+                android:layout_below="@id/bankSpinner"
+                android:layout_marginTop="16dp"
+                android:background="#2196F3"
+                android:padding="10dp"
+                />
+
+        </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
 
         <View
             android:layout_width="match_parent"

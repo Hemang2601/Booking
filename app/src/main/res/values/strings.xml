@@ -10,7 +10,8 @@
     </array>
 
 
-    <array name="bank_names">
+        <string-array name="bank_names_array">
+            <item>Select Bank</item>
         <item>State Bank of India (SBI)</item>
         <item>HDFC Bank</item>
         <item>ICICI Bank</item>
@@ -31,8 +32,8 @@
         <item>Federal Bank</item>
         <item>Karnataka Bank</item>
         <item>Corporation Bank</item>
-        <!-- Add more banks as needed -->
-    </array>
+        </string-array>
+
 
     <string name="select_transaction_type">Select Transaction Type</string>
     <string name="select_bank">Select Bank</string>

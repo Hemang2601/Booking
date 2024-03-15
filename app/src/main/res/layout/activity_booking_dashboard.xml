@@ -345,29 +345,34 @@
 
         </LinearLayout>
 
+
         <androidx.cardview.widget.CardView
             android:id="@+id/cardProfileOptionsLogout"
-            android:layout_width="match_parent"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            app:cardElevation="10dp"
+            app:cardElevation="100dp"
             android:visibility="gone"
-            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            app:cardCornerRadius="10dp"
+            android:layout_below="@id/appointmentCardView"
+            android:layout_marginHorizontal="300dp"
             >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:background="@color/transparent">
 
                 <!-- Profile Options -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardProfileOptions"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     app:cardElevation="10dp"
                     app:cardCornerRadius="8dp"
-                    android:layout_margin="20dp"
+                    android:layout_margin="10dp"
+
                     >
 
                     <LinearLayout
@@ -381,6 +386,7 @@
                             android:id="@+id/imageProfile"
                             android:layout_width="48dp"
                             android:layout_height="48dp"
+                            android:padding="2dp"
                             android:src="@drawable/profile"
                             android:layout_gravity="center"/>
 
@@ -399,12 +405,11 @@
                 <!-- Logout -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardLogout"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     app:cardElevation="10dp"
                     app:cardCornerRadius="8dp"
-                    android:layout_margin="20dp">
+                    android:layout_margin="10dp">
 
                     <LinearLayout
                         android:id="@+id/layoutLogout"
@@ -439,10 +444,11 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/arrow"
                 android:layout_gravity="bottom|center_horizontal"
-                android:layout_marginBottom="-10dp"
-
-                 />
+                android:layout_marginBottom="10dp"
+                android:visibility="gone"
+                />
         </androidx.cardview.widget.CardView>
+
 
 
         <View

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,7 +31,6 @@ public class BookingDashboardActivity extends AppCompatActivity {
     private CardView cardLogout;
     private static final String PREFS_NAME = "MyPrefsFile";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,35 +47,23 @@ public class BookingDashboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Toggle visibility of the profile options and logout cards
-                if (isProfileOptionsLogoutVisible) {
-                    cardProfileOptionsLogout.setVisibility(View.GONE);
-                    isProfileOptionsLogoutVisible = false;
-                } else {
-                    cardProfileOptionsLogout.setVisibility(View.VISIBLE);
-                    isProfileOptionsLogoutVisible = true;
-                }
+                toggleProfileOptionsVisibility();
             }
         });
-        ImageView arrowIcon = findViewById(R.id.arrowIcon);
-        arrowIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Hide cardProfileOptionsLogout
-                cardProfileOptionsLogout.setVisibility(View.GONE);
-                isProfileOptionsLogoutVisible = false;
-            }
-        });
+//        ImageView arrowIcon = findViewById(R.id.arrowIcon);
+//        arrowIcon.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Hide cardProfileOptionsLogout
+//                hideProfileOptions();
+//            }
+//        });
 
         // Set click listeners for cardProfileOptions and cardLogout
         cardProfileOptions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Navigate to ProfileActivity
-                Intent intent = new Intent(BookingDashboardActivity.this, ProfileActivity.class);
-                // Pass user_id and username to ProfileActivity
-                intent.putExtra("user_id", getIntent().getStringExtra("user_id"));
-                intent.putExtra("username", getIntent().getStringExtra("username"));
-                startActivity(intent);
+                navigateToProfileActivity();
             }
         });
 
@@ -86,8 +74,55 @@ public class BookingDashboardActivity extends AppCompatActivity {
             }
         });
 
-
         // Initialize other views and set up listeners
+        initializeViews();
+
+        // Set OnClickListener for other cards
+        setCardClickListeners();
+
+        // Set touch listener to hide cardProfileOptionsLogout when touched outside
+        findViewById(android.R.id.content).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN && isProfileOptionsLogoutVisible) {
+                    float x = event.getX();
+                    float y = event.getY();
+                    if (!isInsideView(cardProfileOptionsLogout, x, y)) {
+                        hideProfileOptions();
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
+    private void toggleProfileOptionsVisibility() {
+        if (isProfileOptionsLogoutVisible) {
+            hideProfileOptions();
+        } else {
+            showProfileOptions();
+        }
+    }
+
+    private void showProfileOptions() {
+        cardProfileOptionsLogout.setVisibility(View.VISIBLE);
+        isProfileOptionsLogoutVisible = true;
+    }
+
+    private void hideProfileOptions() {
+        cardProfileOptionsLogout.setVisibility(View.GONE);
+        isProfileOptionsLogoutVisible = false;
+    }
+
+    private boolean isInsideView(View view, float x, float y) {
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        int viewX = location[0];
+        int viewY = location[1];
+        return (x > viewX && x < (viewX + view.getWidth()) && y > viewY && y < (viewY + view.getHeight()));
+    }
+
+    private void initializeViews() {
         TextView userIdTextView = findViewById(R.id.userIdTextView);
         TextView helloUsernameTextView = findViewById(R.id.helloUsernameTextView);
 
@@ -127,25 +162,74 @@ public class BookingDashboardActivity extends AppCompatActivity {
                 handler.postDelayed(this, delay);
             }
         }, delay);
-
-        // Set OnClickListener for other cards
-        setCardClickListeners();
     }
-    @SuppressLint("MissingSuperCall")
-    @Override
-    public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setTitle("Exit")
-                .setMessage("Are you sure you want to exit?")
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        // Finish the activity when "Yes" is clicked
-                        finish();
-                    }
-                }).create().show();
+    private void setCardClickListeners() {
+        // Initialize your CardView elements
+        CardView cardAppointments = findViewById(R.id.cardAppointments);
+        CardView cardCancel = findViewById(R.id.cardCancel);
+        CardView cardHistory = findViewById(R.id.cardHistory);
+        CardView cardStatus = findViewById(R.id.cardStatus);
+        CardView cardCheck = findViewById(R.id.cardCheck);
+        CardView cardHelp = findViewById(R.id.cardHelp);
+
+        // Set OnClickListener for each card
+        cardAppointments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateToActivity(AppointmentActivity.class);
+            }
+        });
+        cardCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateToActivity(CancelActivity.class);
+            }
+        });
+        cardHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateToActivity(HistoryActivity.class);
+            }
+        });
+        cardStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateToActivity(StatusActivity.class);
+            }
+        });
+        cardCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateToActivity(CheckActivity.class);
+            }
+        });
+        cardHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateToActivity(HelpActivity.class);
+            }
+        });
     }
+
+    private void navigateToProfileActivity() {
+        hideProfileOptions();
+        // Navigate to ProfileActivity
+        Intent intent = new Intent(BookingDashboardActivity.this, ProfileActivity.class);
+        // Pass user_id and username to ProfileActivity
+        intent.putExtra("user_id", getIntent().getStringExtra("user_id"));
+        intent.putExtra("username", getIntent().getStringExtra("username"));
+        startActivity(intent);
+    }
+
+    private void navigateToActivity(Class<?> cls) {
+        // Navigate to the specified activity with user_id and username
+        Intent intent = new Intent(BookingDashboardActivity.this, cls);
+        intent.putExtra("user_id", getIntent().getStringExtra("user_id"));
+        intent.putExtra("username", getIntent().getStringExtra("username"));
+        startActivity(intent);
+    }
+
     private void showLogoutDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Logout");
@@ -213,63 +297,23 @@ public class BookingDashboardActivity extends AppCompatActivity {
         return images;
     }
 
-    private void setCardClickListeners() {
-        // Initialize your CardView elements
-        CardView cardAppointments = findViewById(R.id.cardAppointments);
-        CardView cardCancel = findViewById(R.id.cardCancel);
-        CardView cardHistory = findViewById(R.id.cardHistory);
-        CardView cardStatus = findViewById(R.id.cardStatus);
-        CardView cardCheck = findViewById(R.id.cardCheck);
-        CardView cardHelp = findViewById(R.id.cardHelp);
-
-        // Set OnClickListener for each card
-        cardAppointments.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navigateToActivity(AppointmentActivity.class);
-            }
-        });
-        cardCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navigateToActivity(CancelActivity.class);
-            }
-        });
-        cardHistory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navigateToActivity(HistoryActivity.class);
-            }
-        });
-        cardStatus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navigateToActivity(StatusActivity.class);
-            }
-        });
-        cardCheck.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navigateToActivity(CheckActivity.class);
-            }
-        });
-        cardHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navigateToActivity(HelpActivity.class);
-            }
-        });
-    }
-
-    private void navigateToActivity(Class<?> cls) {
-        // Navigate to the specified activity with user_id and username
-        Intent intent = new Intent(BookingDashboardActivity.this, cls);
-        intent.putExtra("user_id", getIntent().getStringExtra("user_id"));
-        intent.putExtra("username", getIntent().getStringExtra("username"));
-        startActivity(intent);
-    }
-
     private void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Exit")
+                .setMessage("Are you sure you want to exit?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        // Finish the activity when "Yes" is clicked
+                        finish();
+                    }
+                }).create().show();
     }
 }

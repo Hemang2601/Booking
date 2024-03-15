@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Booking</string>
+    <array name="transaction_types">
+        <item>Cash Deposit</item>
+        <item>Withdraw</item>
+        <item>Passbook Printing</item>
+        <item>IPO</item>
+        <item>Loan</item>
+        <!-- Add more transaction types as needed -->
+    </array>
+
+
+    <array name="bank_names">
+        <item>State Bank of India (SBI)</item>
+        <item>HDFC Bank</item>
+        <item>ICICI Bank</item>
+        <item>Axis Bank</item>
+        <item>Punjab National Bank (PNB)</item>
+        <item>Bank of Baroda (BOB)</item>
+        <item>Kotak Mahindra Bank</item>
+        <item>IDBI Bank</item>
+        <item>Canara Bank</item>
+        <item>Union Bank of India</item>
+        <item>Central Bank of India</item>
+        <item>Bank of India</item>
+        <item>Indian Bank</item>
+        <item>UCO Bank</item>
+        <item>YES Bank</item>
+        <item>IndusInd Bank</item>
+        <item>RBL Bank</item>
+        <item>Federal Bank</item>
+        <item>Karnataka Bank</item>
+        <item>Corporation Bank</item>
+        <!-- Add more banks as needed -->
+    </array>
+
+    <string name="select_transaction_type">Select Transaction Type</string>
+    <string name="select_bank">Select Bank</string>
+</resources>

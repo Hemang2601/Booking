@@ -1,0 +1,92 @@
+<!-- res/layout/activity_booking_dashboard.xml -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/userIdTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="User ID: "
+        android:textSize="18sp"
+        android:visibility="visible"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-13dp"
+        android:background="@color/white"
+        >
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/appointmentCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:cardCornerRadius="20dp"
+            app:cardPreventCornerOverlap="true"
+            android:layout_marginBottom="4dp"
+            android:elevation="10dp">
+
+            <!-- Contents inside the CardView, you can customize this as needed -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="85dp"
+                android:padding="16dp"
+                >
+
+
+                <ImageView
+                    android:id="@+id/iconImageView"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/profile"
+                    />
+
+                <TextView
+                    android:id="@+id/helloUsernameTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/iconImageView"
+                    android:text="Hello, "
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/welcomemessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="35dp"
+                    android:layout_toEndOf="@id/iconImageView"
+                    android:text="Check Appointment Date / Time"
+                    android:textSize="16sp" />
+
+                <!-- Notification icon on the right side -->
+                <ImageView
+                    android:id="@+id/notificationIcon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/notification_icon"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:background="@android:color/transparent" />
+    </RelativeLayout>
+</RelativeLayout>

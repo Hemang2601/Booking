@@ -1,0 +1,211 @@
+<!-- res/layout/activity_booking_dashboard.xml -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/userIdTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="User ID: "
+        android:textSize="18sp"
+        android:visibility="gone"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-13dp"
+        android:background="@color/white"
+        >
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/appointmentCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:cardCornerRadius="20dp"
+            app:cardPreventCornerOverlap="true"
+            android:layout_marginBottom="4dp"
+            android:elevation="10dp">
+
+            <!-- Contents inside the CardView, you can customize this as needed -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="85dp"
+                android:padding="16dp"
+                >
+
+
+                <ImageView
+                    android:id="@+id/iconImageView"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/profile"
+                    />
+
+                <TextView
+                    android:id="@+id/helloUsernameTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/iconImageView"
+                    android:text="Hello, "
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/welcomemessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="35dp"
+                    android:layout_toEndOf="@id/iconImageView"
+                    android:text="Help"
+                    android:textSize="16sp" />
+
+                <!-- Notification icon on the right side -->
+                <ImageView
+                    android:id="@+id/notificationIcon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/notification_icon"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/bookingOptionsCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="20dp"
+            app:cardPreventCornerOverlap="true"
+            android:elevation="10dp"
+            android:layout_below="@id/appointmentCardView">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="14dp">
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="1"
+                    android:id="@+id/table">
+
+                    <!-- Developer info -->
+                    <TableRow>
+                        <ImageView
+                            android:padding="-6dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/person"
+                            android:layout_gravity="center_vertical"
+                            android:paddingEnd="8dp"/>
+                        <TextView
+                            android:id="@+id/developerInfoLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:text="Developer"
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:id="@+id/developerInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:text="Hemang Lakhadiya"
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
+                    </TableRow>
+
+                    <!-- Email -->
+                    <TableRow>
+                        <ImageView
+                            android:padding="-6dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/email"
+                            android:layout_gravity="center_vertical"
+                            android:paddingEnd="8dp"/>
+                        <TextView
+                            android:id="@+id/emailLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:text="Email"
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:id="@+id/email"
+                            android:padding="10dp"
+                            android:textStyle="bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="hemanglakhadiya49@gmail.com"
+                            android:textSize="16sp"/>
+                    </TableRow>
+
+                    <!-- Contact -->
+                    <TableRow>
+                        <ImageView
+                            android:padding="-6dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/phone"
+                            android:layout_gravity="center_vertical"
+                            android:paddingEnd="8dp"/>
+                        <TextView
+                            android:id="@+id/contactLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Contact Us"
+                            android:padding="10dp"
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:id="@+id/contact"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:textStyle="bold"
+                            android:text="7096975404"
+                            android:textSize="16sp"/>
+                    </TableRow>
+
+                </TableLayout>
+
+                <!-- App description -->
+                <TextView
+                    android:id="@+id/appDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="This application aims to simplify the booking process, ensuring users spend less time waiting in line and more time enjoying their activities. With intuitive features and a user-friendly interface, the app revolutionizes how users engage with booking services, offering convenience and efficiency at their fingertips."
+                    android:textSize="16sp"
+                    android:layout_marginTop="20dp"
+                    android:layout_below="@+id/table"
+                    android:gravity="start|end|top|bottom|center|center_vertical|fill|fill_vertical|center_horizontal|fill_horizontal|clip_vertical|clip_horizontal|start|end|left|right"
+                    android:textAlignment="textStart"
+                    android:justificationMode="inter_word"/>
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:background="@android:color/transparent" />
+    </RelativeLayout>
+</RelativeLayout>

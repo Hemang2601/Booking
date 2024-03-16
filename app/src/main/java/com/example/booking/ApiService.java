@@ -19,4 +19,7 @@ public interface ApiService {
 
     @POST("change_password.php")
     Call<ResponseBody> changePassword(@Body UserIdPasswordRequest request);
+
+    @POST("send_appointment_data.php")
+    Call<ResponseBody> sendAppointmentData(@Body AppointmentRequest appointmentRequest);
 }

@@ -113,62 +113,97 @@
                 android:paddingStart="8dp"
                 android:gravity="center_vertical"/>
 
-            <!-- Checkboxes for Transaction Types -->
-            <CheckBox
-                android:id="@+id/checkBoxDeposit"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/checkBox"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Deposit"
-                android:layout_below="@id/typeOfTransactionLabel"
-                android:layout_marginTop="8dp"/>
+                android:orientation="horizontal"
+                android:layout_below="@+id/typeOfTransactionLabel">
 
-            <CheckBox
-                android:id="@+id/checkBoxWithdraw"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Withdraw"
-                android:layout_below="@id/checkBoxDeposit"
-                android:layout_marginTop="8dp"/>
+                <!-- Column 1 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-            <CheckBox
-                android:id="@+id/checkBoxPassbook"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Passbook"
-                android:layout_below="@id/checkBoxWithdraw"
-                android:layout_marginTop="8dp"/>
+                    <CheckBox
+                        android:id="@+id/checkBoxDeposit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Deposit"/>
 
-            <CheckBox
-                android:id="@+id/checkBoxPrinting"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Printing Passbook"
-                android:layout_below="@id/checkBoxPassbook"
-                android:layout_marginTop="8dp"/>
+                    <CheckBox
+                        android:id="@+id/checkBoxPrinting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Printing Passbook"/>
 
-            <CheckBox
-                android:id="@+id/checkBoxIPO"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="IPO"
-                android:layout_below="@id/checkBoxPrinting"
-                android:layout_marginTop="8dp"/>
+                    <CheckBox
+                        android:id="@+id/checkBoxLoan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Loan"/>
 
-            <CheckBox
-                android:id="@+id/checkBoxLoan"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Loan"
-                android:layout_below="@id/checkBoxIPO"
-                android:layout_marginTop="8dp"/>
+                </LinearLayout>
 
-            <CheckBox
-                android:id="@+id/checkBoxShare"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Share"
-                android:layout_below="@id/checkBoxLoan"
-                android:layout_marginTop="8dp"/>
+                <!-- Column 2 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <CheckBox
+                        android:id="@+id/checkBoxWithdraw"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Withdraw"/>
+
+                    <CheckBox
+                        android:id="@+id/checkBoxIPO"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="IPO"/>
+
+                    <CheckBox
+                        android:id="@+id/checkBoxShare"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Share"/>
+
+                </LinearLayout>
+
+                <!-- Column 3 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <CheckBox
+                        android:id="@+id/checkBoxPassbook"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="New Passbook"/>
+
+                    <CheckBox
+                        android:id="@+id/checkBoxAtm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ATM"/>
+
+                    <CheckBox
+                        android:id="@+id/checkBoxBill"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Bill Payment"/>
+
+
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <!-- Date Selection with icon -->
             <TextView
@@ -177,12 +212,13 @@
                 android:layout_height="wrap_content"
                 android:text="Select Date"
                 android:textSize="16sp"
+                android:layout_marginLeft="-3dp"
                 android:textStyle="bold"
                 android:drawableStart="@drawable/calendar"
                 android:drawablePadding="8dp"
                 android:paddingStart="8dp"
                 android:gravity="center_vertical"
-                android:layout_below="@id/checkBoxShare"
+                android:layout_below="@id/checkBox"
                 android:layout_marginTop="16dp"/>
 
             <Button
@@ -190,7 +226,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Select Date"
-                android:layout_below="@+id/checkBoxShare"
+                android:layout_below="@+id/checkBox"
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="200dp"
                 />
@@ -201,6 +237,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Select Time"
+                android:layout_marginLeft="-5dp"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:drawableStart="@drawable/clock"
@@ -234,19 +271,23 @@
                 android:layout_below="@id/timeButton"
                 android:layout_marginTop="16dp"/>
 
+
+            <!-- Spinner for Bank Selection -->
             <Spinner
                 android:id="@+id/bankSpinner"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/bankLabel"
-                android:layout_marginTop="8dp"/>
+                android:layout_marginTop="26dp"
+                android:layout_marginLeft="150dp"
+                android:layout_below="@id/timeButton"
+                />
 
             <Button
                 android:id="@+id/appointmentButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Book Appointment"
-                android:layout_below="@id/bankSpinner"
+                android:layout_below="@id/bankLabel"
                 android:layout_marginTop="16dp"
                 android:background="#2196F3"
                 android:padding="10dp"

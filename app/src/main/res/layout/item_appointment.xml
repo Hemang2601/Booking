@@ -1,0 +1,224 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="25dp"
+    app:cardElevation="8dp">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Appointment ID -->
+        <TableRow>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/appointmentid"
+                android:paddingEnd="8dp"
+               />
+
+            <TextView
+                android:id="@+id/appointmentIdTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Appointment ID "
+                android:layout_gravity="center_vertical|start"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/appointmentIdValueTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:text="Value"
+                android:layout_marginLeft="10dp"
+                android:textStyle="normal" />
+
+        </TableRow>
+
+        <!-- Date -->
+        <TableRow>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/calendar"
+                android:paddingEnd="8dp" />
+
+            <TextView
+                android:id="@+id/dateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:text="Date "
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/dateValueTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:text="Value"
+                android:textStyle="normal"
+                android:layout_marginLeft="10dp"/>
+
+        </TableRow>
+
+        <!-- Time -->
+        <TableRow>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/clock"
+                android:paddingEnd="8dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"/>
+
+            <TextView
+                android:id="@+id/timeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:text="Time "
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/timeValueTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:text="Value"
+                android:textStyle="normal"
+                android:layout_marginLeft="10dp"/>
+
+        </TableRow>
+
+        <!-- Bank -->
+        <TableRow>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/bank"
+                android:paddingEnd="8dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"/>
+
+            <TextView
+                android:id="@+id/bankTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:text="Bank "
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/bankValueTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:text="Value"
+                android:textStyle="normal"
+                android:layout_marginLeft="10dp"/>
+
+        </TableRow>
+
+        <!-- Transaction Types -->
+        <TableRow>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/transaction"
+                android:layout_gravity="center_vertical|start"
+                android:paddingEnd="8dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"/>
+
+            <TextView
+                android:id="@+id/transactionTypesTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Transaction Types "
+                android:layout_gravity="center_vertical|start"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/transactionTypesValueTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:text="Value"
+
+                android:textStyle="normal"
+                android:layout_marginLeft="10dp"/>
+
+        </TableRow>
+
+        <!-- Status -->
+        <TableRow>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/status"
+                android:paddingEnd="8dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"/>
+
+            <TextView
+                android:id="@+id/statusTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:text="Status "
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/statusValueTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:text="Value"
+                android:textStyle="normal"
+                android:layout_marginLeft="10dp"/>
+
+        </TableRow>
+
+        <!-- Token -->
+        <TableRow>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/token"
+                android:paddingEnd="8dp"
+               android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"/>
+
+            <TextView
+                android:id="@+id/tokenTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:text="Token "
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tokenValueTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:text="Value"
+                android:textStyle="normal"
+                android:layout_marginLeft="10dp"/>
+
+        </TableRow>
+
+    </TableLayout>
+</androidx.cardview.widget.CardView>

@@ -22,4 +22,7 @@ public interface ApiService {
 
     @POST("send_appointment_data.php")
     Call<ResponseBody> sendAppointmentData(@Body AppointmentRequest appointmentRequest);
+
+    @POST("status.php")
+    Call<ResponseBody> getStatusData(@Body StatusIdRequest statusIdRequest);
 }

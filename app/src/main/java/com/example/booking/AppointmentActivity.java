@@ -38,6 +38,8 @@ public class AppointmentActivity extends AppCompatActivity {
     private Button timeButton;
     private Button bankButton;
     private Button appointmentButton;
+    private CheckBox checkBoxDeposit,checkBoxWithdraw,checkBoxPassbook,checkBoxPrinting,checkBoxIPO,checkBoxLoan,checkBoxShare
+            ,checkBoxBill,checkBoxAtm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -254,6 +256,9 @@ public class AppointmentActivity extends AppCompatActivity {
                             Toast.makeText(AppointmentActivity.this, "Appointment booked successfully", Toast.LENGTH_SHORT).show();
                             Log.d("AppointmentResponse", "Appointment booked successfully");
 
+                            // Clear form data
+                            clearFormData();
+
                             // Handle any further actions after successful appointment booking
                         } else {
                             // Appointment booking failed or other error
@@ -284,6 +289,26 @@ public class AppointmentActivity extends AppCompatActivity {
                 // Handle any further actions after network failure
             }
         });
+    }
+
+    private void clearFormData() {
+        // Clear selected transaction types
+        checkBoxDeposit.setChecked(false);
+        checkBoxWithdraw.setChecked(false);
+        checkBoxPassbook.setChecked(false);
+        checkBoxPrinting.setChecked(false);
+        checkBoxIPO.setChecked(false);
+        checkBoxLoan.setChecked(false);
+        checkBoxShare.setChecked(false);
+        checkBoxAtm.setChecked(false);
+        checkBoxBill.setChecked(false);
+
+        // Reset date and time buttons
+        dateButton.setText("Select Date");
+        timeButton.setText("Select Time");
+
+        // Reset bank spinner
+        bankSpinner.setSelection(0);
     }
 
     private boolean isValidTime(int hourOfDay, int minute) {

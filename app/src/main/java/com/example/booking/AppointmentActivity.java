@@ -1,5 +1,6 @@
 package com.example.booking;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -10,12 +11,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,13 +41,18 @@ public class AppointmentActivity extends AppCompatActivity {
     private Button timeButton;
     private Button bankButton;
     private Button appointmentButton;
+    private ProgressBar progressBar;
+    private CardView appointmentformCardView;
+
     private CheckBox checkBoxDeposit,checkBoxWithdraw,checkBoxPassbook,checkBoxPrinting,checkBoxIPO,checkBoxLoan,checkBoxShare
             ,checkBoxBill,checkBoxAtm;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment);
+
 
         CheckBox checkBoxDeposit = findViewById(R.id.checkBoxDeposit);
         CheckBox checkBoxWithdraw = findViewById(R.id.checkBoxWithdraw);
@@ -60,6 +68,8 @@ public class AppointmentActivity extends AppCompatActivity {
         bankSpinner = findViewById(R.id.bankSpinner);
         dateButton = findViewById(R.id.dateButton);
         timeButton = findViewById(R.id.timeButton);
+        progressBar = findViewById(R.id.progressBar);
+        appointmentformCardView = findViewById(R.id.appointmentformCardView);
 
         appointmentButton = findViewById(R.id.appointmentButton);
 
@@ -142,6 +152,7 @@ public class AppointmentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Get selected transaction types
+
                 StringBuilder selectedTransactionTypes = new StringBuilder();
                 if (checkBoxDeposit.isChecked()) {
                     selectedTransactionTypes.append("Deposit , ");
@@ -213,6 +224,9 @@ public class AppointmentActivity extends AppCompatActivity {
                     Log.d("AppointmentDetails", "Selected Date: " + selectedDate);
                     Log.d("AppointmentDetails", "Selected Time: " + selectedTime);
                     Log.d("AppointmentDetails", "Selected Bank: " + selectedBank);
+                    appointmentformCardView.setVisibility(View.GONE);
+                    // Show progress bar
+                    progressBar.setVisibility(View.VISIBLE);
                     sendAppointmentData(userId, selectedDate, selectedTime, selectedBank, transactionTypes);
                 }
             }
@@ -245,6 +259,11 @@ public class AppointmentActivity extends AppCompatActivity {
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                // Hide progress bar
+                progressBar.setVisibility(View.GONE);
+                // Show the form again
+                appointmentformCardView.setVisibility(View.VISIBLE);
+
                 if (response.isSuccessful()) {
                     try {
                         // Parse the response body JSON
@@ -255,9 +274,8 @@ public class AppointmentActivity extends AppCompatActivity {
                             // Appointment booked successfully
                             Toast.makeText(AppointmentActivity.this, "Appointment booked successfully", Toast.LENGTH_SHORT).show();
                             Log.d("AppointmentResponse", "Appointment booked successfully");
+                            finish();
 
-                            // Clear form data
-                            clearFormData();
 
                             // Handle any further actions after successful appointment booking
                         } else {
@@ -283,6 +301,11 @@ public class AppointmentActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                // Hide progress bar
+                progressBar.setVisibility(View.GONE);
+
+                // Show the form again
+                appointmentformCardView.setVisibility(View.VISIBLE);
                 // Handle network failure
                 Toast.makeText(AppointmentActivity.this, "Network error", Toast.LENGTH_SHORT).show();
                 Log.e("AppointmentResponse", "Network error", t);

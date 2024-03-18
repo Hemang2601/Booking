@@ -91,6 +91,7 @@ public class StatusActivity extends AppCompatActivity {
                         Log.e("StatusActivity", "Failed to parse JSON response", e);
                     }
                 } else {
+                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(StatusActivity.this, "Failed to get status data", Toast.LENGTH_SHORT).show();
                     Log.e("StatusActivity", "HTTP error: " + response.code());
                 }

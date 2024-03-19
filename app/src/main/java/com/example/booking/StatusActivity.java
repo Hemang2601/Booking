@@ -1,9 +1,11 @@
 package com.example.booking;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +29,8 @@ import retrofit2.Response;
 public class StatusActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
+    private TextView userIdTextView;
+    private TextView helloUsernameTextView;
     private AppointmentAdapter appointmentAdapter;
     private ProgressBar progressBar;
 
@@ -38,8 +42,13 @@ public class StatusActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         progressBar = findViewById(R.id.progressBar);
+        userIdTextView = findViewById(R.id.userIdTextView);
+        helloUsernameTextView = findViewById(R.id.helloUsernameTextView);
 
         String userId = getIntent().getStringExtra("user_id");
+        String username = getIntent().getStringExtra("username");
+        userIdTextView.setText("User ID: " + userId);
+        helloUsernameTextView.setText(capitalizeEachWord(username));
         getStatusData(userId);
     }
 
@@ -104,5 +113,19 @@ public class StatusActivity extends AppCompatActivity {
                 Log.e("StatusActivity", "Network error", t);
             }
         });
+    }
+    private String capitalizeEachWord(String text) {
+        if (!TextUtils.isEmpty(text)) {
+            String[] words = text.split("\\s+");
+            StringBuilder result = new StringBuilder();
+            for (String word : words) {
+                if (!TextUtils.isEmpty(word)) {
+                    result.append(word.substring(0, 1).toUpperCase())
+                            .append(word.substring(1).toLowerCase()).append(" ");
+                }
+            }
+            return result.toString().trim();
+        }
+        return text;
     }
 }

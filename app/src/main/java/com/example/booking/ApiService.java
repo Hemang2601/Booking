@@ -37,4 +37,19 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("reset_password.php") // Replace "reset-password" with your actual endpoint
     Call<ResponseBody> sendPasswordResetEmail(@Field("email") String email);
+
+
+    @FormUrlEncoded
+    @POST("verify_otp_for_password_reset.php")
+    Call<ResponseBody> verifyOtpForPasswordReset(
+            @Field("email") String email,
+            @Field("otp") String otp
+    );
+
+    @FormUrlEncoded
+    @POST("forgetpassword_change_password.php") // Change to your API endpoint for changing password
+    Call<ResponseBody> changePassword(
+            @Field("email") String email,
+            @Field("new_password") String newPassword
+    );
 }

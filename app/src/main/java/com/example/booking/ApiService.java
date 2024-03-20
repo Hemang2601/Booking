@@ -3,6 +3,8 @@ package com.example.booking;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
 public interface ApiService {
@@ -25,4 +27,14 @@ public interface ApiService {
 
     @POST("status.php")
     Call<ResponseBody> getStatusData(@Body StatusIdRequest statusIdRequest);
+
+    @POST("cancelDataView.php")
+    Call<ResponseBody> cancelBooking(@Body CancelRequest cancelRequest);
+
+    @POST("cancel.php")
+    Call<ResponseBody> cancelAppointment(@Body CancelAppointmentRequest cancelRequest);
+
+    @FormUrlEncoded
+    @POST("reset_password.php") // Replace "reset-password" with your actual endpoint
+    Call<ResponseBody> sendPasswordResetEmail(@Field("email") String email);
 }

@@ -36,6 +36,7 @@
             <!-- No intent-filter for this activity -->
         </activity>
         <activity android:name=".AppointmentActivity"/>
+        <activity android:name=".ForgetPasswordActivity"/>
         <activity android:name=".CancelActivity" />
         <activity android:name=".HistoryActivity" />
         <activity android:name=".StatusActivity" />

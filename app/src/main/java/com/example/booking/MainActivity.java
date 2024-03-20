@@ -1,6 +1,5 @@
 package com.example.booking;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -74,6 +72,15 @@ public class MainActivity extends AppCompatActivity {
                     // Show a Toast indicating that email and password are required
                     Toast.makeText(MainActivity.this, "Email and password are required", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        forgotPasswordTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Redirect to the forget password activity
+                Intent intent = new Intent(MainActivity.this, ForgetPasswordActivity.class);
+                startActivity(intent);
             }
         });
 

@@ -1,14 +1,21 @@
 package com.example.booking;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -31,6 +38,9 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     private EditText confirmPasswordEditText;
     private Button changePasswordButton,verifyButton;
     private CardView newPasswordCardView,otpCardView,cardView;
+    private ProgressBar progressBar;
+    private TextView backToLoginTextView;
+    private TextView progressMessageTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +49,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
 
         // Initialize views
         emailEditText = findViewById(R.id.emailEditText);
+        backToLoginTextView = findViewById(R.id.backToLoginTextView);
         resetButton = findViewById(R.id.resetButton);
         newPasswordEditText = findViewById(R.id.newPasswordEditText);
         confirmPasswordEditText = findViewById(R.id.confirmPasswordEditText);
@@ -47,9 +58,22 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         newPasswordCardView=findViewById(R.id.newPasswordCardView);
         otpCardView=findViewById(R.id.otpCardView);
         cardView=findViewById(R.id.cardView);
+        progressBar = findViewById(R.id.progressBar);
+        progressMessageTextView = findViewById(R.id.progressMessageTextView);
 
         newPasswordCardView.setVisibility(View.GONE);
         otpCardView.setVisibility(View.GONE);
+
+        // Set click listener for "Back to login" TextView
+        backToLoginTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle click, navigate back to login activity
+                Intent intent = new Intent(ForgetPasswordActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish(); // Optional: finish current activity to prevent coming back to it with back button
+            }
+        });
 
 
         // Set onClickListener for resetButton
@@ -61,7 +85,14 @@ public class ForgetPasswordActivity extends AppCompatActivity {
 
                 // Check if email is not empty
                 if (!email.isEmpty()) {
+                    // Close the keyboard
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
                     // Call the method to handle password reset
+                    cardView.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.VISIBLE);
+                    progressMessageTextView.setVisibility(View.VISIBLE);
                     handlePasswordReset(email);
                 } else {
                     // Show a Toast indicating that email is required
@@ -69,6 +100,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                 }
             }
         });
+
 
         verifyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +128,13 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                     // Retrieve email entered by the user
                     String email = emailEditText.getText().toString().trim();
 
+                    // Close the keyboard
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
                     // Call the method to handle OTP verification
+                    otpCardView.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.VISIBLE);
+                    progressMessageTextView.setVisibility(View.VISIBLE);
                     handleOtpVerification(email, otp);
                 }
             }
@@ -112,7 +150,13 @@ public class ForgetPasswordActivity extends AppCompatActivity {
 
                 // Check if passwords match
                 if (newPassword.equals(confirmPassword)) {
+                    // Close the keyboard
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
                     // Call the method to handle password change
+                    newPasswordCardView.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.VISIBLE);
+                    progressMessageTextView.setVisibility(View.VISIBLE);
                     handleChangePassword(newPassword);
                 } else {
                     // Show a Toast indicating that passwords do not match
@@ -136,6 +180,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     private void setOtpEditTextListeners() {
         for (int i = 0; i < otpEditTexts.length; i++) {
             final int currentIndex = i;
+            final int previousIndex = (i == 0) ? otpEditTexts.length - 1 : i - 1;
             final int nextIndex = (i + 1) % otpEditTexts.length;
 
             otpEditTexts[currentIndex].addTextChangedListener(new TextWatcher() {
@@ -147,13 +192,40 @@ public class ForgetPasswordActivity extends AppCompatActivity {
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    if (s.length() == 1 && currentIndex != 5) { // Check if not the last position
-                        otpEditTexts[nextIndex].requestFocus();
+                    if (s.length() == 1) { // Check if a digit is entered
+                        // Automatically move to the next box if not the last position
+                        if (currentIndex != otpEditTexts.length - 1) {
+                            otpEditTexts[nextIndex].requestFocus();
+                        }
+                    } else if (s.length() == 0) { // Check if the digit is deleted
+                        // Automatically move to the previous box if not the first position
+                        if (currentIndex != 0) {
+                            otpEditTexts[previousIndex].requestFocus();
+                        }
                     }
+                }
+            });
+
+            // Handle the case where the user wants to delete the current digit by pressing backspace
+            otpEditTexts[currentIndex].setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN) {
+                        // Automatically move to the previous box if not the first position
+                        if (currentIndex != 0) {
+                            otpEditTexts[previousIndex].requestFocus();
+                        }
+                        // Clear the current box when deleting using backspace
+                        otpEditTexts[currentIndex].setText("");
+                        return true; // Consume the event
+                    }
+                    return false; // Let the system handle other key events
                 }
             });
         }
     }
+
+
 
     private void handlePasswordReset(String email) {
         ApiService apiService = RetrofitClient.getRetrofitInstance().create(ApiService.class);
@@ -168,20 +240,37 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                         String responseBody = response.body().string();
                         Log.d("PasswordResetResponse", "Response: " + responseBody);
 
+                        // Parse the JSON response
+                        JSONObject jsonResponse = new JSONObject(responseBody);
+                        boolean success = jsonResponse.getBoolean("success");
+                        String message = jsonResponse.getString("message");
 
-                        // Hide newPasswordCardView
-                        cardView.setVisibility(View.GONE);
+                        if (success) {
+                            // Hide newPasswordCardView
+                            cardView.setVisibility(View.GONE);
 
-                        // Show otpCardView
-                        otpCardView.setVisibility(View.VISIBLE);
+                            // Show otpCardView
+                            progressBar.setVisibility(View.GONE);
+                            progressMessageTextView.setVisibility(View.GONE);
+                            otpCardView.setVisibility(View.VISIBLE);
 
-                        // Handle successful response
-                        Toast.makeText(ForgetPasswordActivity.this, "Password reset email sent", Toast.LENGTH_SHORT).show();
-                    } catch (IOException e) {
+                            // Handle successful response
+                            Toast.makeText(ForgetPasswordActivity.this, message, Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Display the message from the response
+                            progressBar.setVisibility(View.GONE);
+                            progressMessageTextView.setVisibility(View.GONE);
+                            cardView.setVisibility(View.VISIBLE);
+                            Toast.makeText(ForgetPasswordActivity.this, message, Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (IOException | JSONException e) {
                         e.printStackTrace();
                     }
                 } else {
                     // Handle unsuccessful response
+                    progressBar.setVisibility(View.GONE);
+                    progressMessageTextView.setVisibility(View.GONE);
+                    cardView.setVisibility(View.VISIBLE);
                     Toast.makeText(ForgetPasswordActivity.this, "Failed to send password reset email", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -189,11 +278,15 @@ public class ForgetPasswordActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 // Handle failure
+                cardView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+                progressMessageTextView.setVisibility(View.GONE);
                 Toast.makeText(ForgetPasswordActivity.this, "Network error", Toast.LENGTH_SHORT).show();
                 t.printStackTrace();
             }
         });
     }
+
 
     private void handleOtpVerification(String email, String otp) {
         ApiService apiService = RetrofitClient.getRetrofitInstance().create(ApiService.class);
@@ -218,28 +311,37 @@ public class ForgetPasswordActivity extends AppCompatActivity {
 
                         if (success) {
                             // Hide newPasswordCardView
-                            cardView.setVisibility(View.GONE);
+                            otpCardView.setVisibility(View.GONE);
 
                             // Show otpCardView
-                            otpCardView.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
+                            progressMessageTextView.setVisibility(View.GONE);
+                            newPasswordCardView.setVisibility(View.VISIBLE);
 
                             // Handle successful response
-                            Toast.makeText(ForgetPasswordActivity.this, "Password reset email sent", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ForgetPasswordActivity.this, "OTP verification successful", Toast.LENGTH_SHORT).show();
                         } else {
                             // Check if the message indicates email is not registered
                             if (message.equals("Email is not registered")) {
-                                // Display a Toast message indicating that email is not registered
+
                                 Toast.makeText(ForgetPasswordActivity.this, "Email is not registered", Toast.LENGTH_SHORT).show();
                             } else {
                                 // Display the message from the response
+                                progressBar.setVisibility(View.GONE);
+                                progressMessageTextView.setVisibility(View.GONE);
+                                otpCardView.setVisibility(View.VISIBLE);
                                 Toast.makeText(ForgetPasswordActivity.this, message, Toast.LENGTH_SHORT).show();
                             }
                         }
                     } catch (IOException | JSONException e) {
                         e.printStackTrace();
+                        otpCardView.setVisibility(View.VISIBLE);
                     }
                 } else {
                     // Handle unsuccessful response
+                    progressBar.setVisibility(View.GONE);
+                    progressMessageTextView.setVisibility(View.GONE);
+                    otpCardView.setVisibility(View.VISIBLE);
                     Toast.makeText(ForgetPasswordActivity.this, "Failed to send password reset email", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -248,6 +350,9 @@ public class ForgetPasswordActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 // Handle failure
+                progressBar.setVisibility(View.GONE);
+                progressMessageTextView.setVisibility(View.GONE);
+                otpCardView.setVisibility(View.VISIBLE);
                 Log.e("OtpVerification", "Network error", t);
                 Toast.makeText(ForgetPasswordActivity.this, "Network error", Toast.LENGTH_SHORT).show();
             }
@@ -277,19 +382,26 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                     try {
                         // Extract the response body as a string
                         String responseBody = response.body().string();
-
-                        // Log the response body
                         Log.d("ChangePassword", "Response: " + responseBody);
 
-                        // Handle successful response
+
                         Log.d("ChangePassword", "Password changed successfully");
+                        progressBar.setVisibility(View.GONE);
+                        progressMessageTextView.setVisibility(View.GONE);
                         Toast.makeText(ForgetPasswordActivity.this, "Password changed successfully", Toast.LENGTH_SHORT).show();
+
+
+                        Intent intent = new Intent(ForgetPasswordActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish(); // This ensures the user cannot navigate back to this activity from MainActivity
                     } catch (IOException e) {
                         e.printStackTrace();
+                        newPasswordCardView.setVisibility(View.VISIBLE);
                     }
                 } else {
                     // Handle unsuccessful response
                     Log.d("ChangePassword", "Failed to change password: " + response.message());
+                    newPasswordCardView.setVisibility(View.VISIBLE);
                     Toast.makeText(ForgetPasswordActivity.this, "Failed to change password", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -297,10 +409,54 @@ public class ForgetPasswordActivity extends AppCompatActivity {
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 // Handle failure
                 Log.e("ChangePassword", "Network error", t);
+                newPasswordCardView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+                progressMessageTextView.setVisibility(View.GONE);
                 Toast.makeText(ForgetPasswordActivity.this, "Network error", Toast.LENGTH_SHORT).show();
                 t.printStackTrace();
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        if (newPasswordCardView.getVisibility() == View.VISIBLE) {
+            // If new password card is visible, show an alert or confirmation dialog
+            // You can customize this part to show an appropriate dialog
+            new AlertDialog.Builder(this)
+                    .setMessage("Are you sure you want to cancel password reset?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // If user confirms, navigate back to the main activity
+                            Intent intent = new Intent(ForgetPasswordActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish(); // This ensures the user cannot navigate back to this activity from MainActivity
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        } else if (otpCardView.getVisibility() == View.VISIBLE) {
+            // If OTP card is visible, show an alert or confirmation dialog
+            // You can customize this part to show an appropriate dialog
+            new AlertDialog.Builder(this)
+                    .setMessage("Are you sure you want to cancel OTP verification?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // If user confirms, navigate back to the main activity
+                            Intent intent = new Intent(ForgetPasswordActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish(); // This ensures the user cannot navigate back to this activity from MainActivity
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        } else {
+            // For other cases, let the system handle the back button press
+            super.onBackPressed();
+        }
+    }
+
 
 }

@@ -61,4 +61,8 @@ public interface ApiService {
             @Query("date") String selectedDate,
             @Query("time") String selectedTime
     );
+
+
+    @POST("getHistoryData.php")
+    Call<ResponseBody> getHistoryData(@Body HistoryIdRequest historyIdRequest);
 }

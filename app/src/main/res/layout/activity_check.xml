@@ -13,7 +13,7 @@
         android:layout_centerInParent="true"
         android:text="User ID: "
         android:textSize="18sp"
-        android:visibility="visible"/>
+        android:visibility="gone" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -80,8 +80,114 @@
                     android:layout_centerVertical="true"/>
 
             </RelativeLayout>
+
         </androidx.cardview.widget.CardView>
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/dateSelectionCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/appointmentCardView"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:elevation="10dp"
+            android:visibility="visible"
+            app:cardCornerRadius="20dp"
+            app:cardPreventCornerOverlap="true">
+
+            <RelativeLayout
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:padding="16dp">
+
+                <!-- Date Selection Section -->
+                <ImageView
+                    android:id="@+id/dateIconImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/calendar" />
+
+                <TextView
+                    android:id="@+id/dateSelectionTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_toEndOf="@id/dateIconImageView"
+                    android:gravity="center"
+                    android:text="Select Date"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/selectDateButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/dateSelectionTextView"
+                    android:text="Select Date"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+            <!-- Time Selection Section -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/date"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="60dp"
+                android:padding="16dp">
+
+                <ImageView
+                    android:id="@+id/timeIconImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/clock" />
+
+                <TextView
+                    android:id="@+id/timeSelectionTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_toEndOf="@id/timeIconImageView"
+                    android:gravity="center"
+                    android:text="Select Time"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/selectTimeButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/timeSelectionTextView"
+                    android:text="Select Time"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+            <!-- Check Button -->
+            <Button
+                android:id="@+id/checkButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="140dp"
+                android:text="Check"
+                android:background="@color/lightGray"
+                android:layout_marginBottom="10dp"
+                android:textSize="16sp" />
+
+
+        </androidx.cardview.widget.CardView>
 
 
         <View

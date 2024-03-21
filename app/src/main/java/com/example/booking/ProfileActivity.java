@@ -181,6 +181,9 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void changePassword(String userId, String newPassword) {
+        // Log the user ID and password
+        Log.d(TAG, "Changing password for user ID: " + userId + ", New password: " + newPassword);
+
         // Show progress bar
         progressBar.setVisibility(View.VISIBLE);
 
@@ -199,20 +202,34 @@ public class ProfileActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
 
                 if (response.isSuccessful()) {
-                    // Password changed successfully
-                    Toast.makeText(ProfileActivity.this, "Password changed successfully", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "Password changed successfully");
+                    try {
+                        // Password updated successfully
+                        JSONObject jsonResponse = new JSONObject(response.body().string());
+                        boolean success = jsonResponse.getBoolean("success");
+                        String message = jsonResponse.getString("message");
+                        Log.d(TAG, "Success: " + success + ", Message: " + message);
 
-                    // Make the change password field visible again
-                    newPasswordLabelTextView.setVisibility(View.GONE);
-                    newPasswordEditText.setVisibility(View.GONE);
-                    changePasswordButton.setVisibility(View.GONE);
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(newPasswordEditText.getWindowToken(), 0);
+                        Toast.makeText(ProfileActivity.this, "Password changed successfully", Toast.LENGTH_SHORT).show();
+
+//                         Make the change password field invisible again
+                         newPasswordLabelTextView.setVisibility(View.GONE);
+                         newPasswordEditText.setVisibility(View.GONE);
+                         changePasswordButton.setVisibility(View.GONE);
+                        // Hide the keyboard
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(findViewById(android.R.id.content).getRootView().getWindowToken(), 0);
+                    } catch (JSONException | IOException e) {
+                        e.printStackTrace();
+                    }
                 } else {
-                    // Handle error response
-                    Toast.makeText(ProfileActivity.this, "Failed to change password", Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "Failed to change password: " + response.message());
+                    try {
+                        // Failed to update password
+                        String errorMessage = response.errorBody().string();
+                        Log.e(TAG, "Failed to update password: " + errorMessage);
+                        Toast.makeText(ProfileActivity.this, "Failed to change password: " + errorMessage, Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -227,4 +244,5 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
     }
+
 }

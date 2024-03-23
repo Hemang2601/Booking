@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,6 +31,7 @@ import retrofit2.Response;
 
 public class CancelActivity extends AppCompatActivity implements CancelAdapter.CancelListener {
     private TextView userIdTextView;
+    private CardView noDataCardView;
     private String userId; // Define userId as a class-level variable
     private RecyclerView recyclerView;
     private TextView helloUsernameTextView;
@@ -46,6 +48,7 @@ public class CancelActivity extends AppCompatActivity implements CancelAdapter.C
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         progressBar = findViewById(R.id.progressBar);
+        noDataCardView = findViewById(R.id.noDatacardView);
 
         // Retrieve user_id and username from Intent extras
         userId = getIntent().getStringExtra("user_id");
@@ -55,6 +58,7 @@ public class CancelActivity extends AppCompatActivity implements CancelAdapter.C
         userIdTextView.setText("User ID: " + userId);
         helloUsernameTextView.setText(capitalizeEachWord(username));
         progressBar.setVisibility(View.VISIBLE); // Show progress bar
+        noDataCardView.setVisibility(View.GONE); // Show progress bar
         cancelBooking(userId);
     }
 
@@ -91,6 +95,9 @@ public class CancelActivity extends AppCompatActivity implements CancelAdapter.C
 
                         if (appointments.isEmpty()) {
                             Toast.makeText(CancelActivity.this, "No appointments found", Toast.LENGTH_SHORT).show();
+                            noDataCardView.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
+
                         } else {
                             recyclerView.setVisibility(View.VISIBLE); // Show RecyclerView if data available
                             cancelAdapter = new CancelAdapter(appointments, CancelActivity.this);
@@ -101,16 +108,21 @@ public class CancelActivity extends AppCompatActivity implements CancelAdapter.C
                         e.printStackTrace();
                         Toast.makeText(CancelActivity.this, "Failed to process response", Toast.LENGTH_SHORT).show();
                         Log.e("CancelActivity", "Failed to parse JSON response", e);
+                        noDataCardView.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
                     }
                 } else {
                     Toast.makeText(CancelActivity.this, "Failed to get status data", Toast.LENGTH_SHORT).show();
                     Log.e("CancelActivity", "HTTP error: " + response.code());
+                    noDataCardView.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                progressBar.setVisibility(View.GONE); // Hide progress bar
+                noDataCardView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(CancelActivity.this, "Network error, please try again", Toast.LENGTH_SHORT).show();
             }
         });
@@ -192,12 +204,16 @@ public class CancelActivity extends AppCompatActivity implements CancelAdapter.C
                     // Handle unsuccessful cancellation, show error message
                     Log.e("CancelActivity", "Failed to cancel appointment for ID: " + appointmentId);
                     Toast.makeText(CancelActivity.this, "Failed to cancel appointment", Toast.LENGTH_SHORT).show();
+                    noDataCardView.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
                 // Handle network failure
+                noDataCardView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
                 Log.e("CancelActivity", "Network error while canceling appointment for ID: " + appointmentId, t);
                 Toast.makeText(CancelActivity.this, "Network error, please try again", Toast.LENGTH_SHORT).show();
             }

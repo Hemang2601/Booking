@@ -103,6 +103,31 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appointmentCardView" />
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/noDatacardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/appointmentCardView"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="30dp"
+            android:visibility="gone"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp">
+
+            <!-- Add a TextView for displaying "Data Not Found" message -->
+            <TextView
+                android:id="@+id/noDataTextView"
+                android:layout_gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/notfound"
+                android:drawablePadding="8dp"
+                android:text="Data Not Found"
+                android:gravity="center"
+                android:textSize="18sp" />
+        </androidx.cardview.widget.CardView>
 
 
         <View

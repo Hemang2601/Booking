@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,10 +30,13 @@ import retrofit2.Response;
 public class StatusActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
+
     private TextView userIdTextView;
     private TextView helloUsernameTextView;
     private AppointmentAdapter appointmentAdapter;
     private ProgressBar progressBar;
+
+    private CardView noDataCardView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,7 @@ public class StatusActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         userIdTextView = findViewById(R.id.userIdTextView);
         helloUsernameTextView = findViewById(R.id.helloUsernameTextView);
+        noDataCardView = findViewById(R.id.noDatacardView);
 
         String userId = getIntent().getStringExtra("user_id");
         String username = getIntent().getStringExtra("username");
@@ -58,7 +63,9 @@ public class StatusActivity extends AppCompatActivity {
         StatusIdRequest statusIdRequest = new StatusIdRequest(userId);
         Call<ResponseBody> call = apiService.getStatusData(statusIdRequest);
 
+        noDataCardView.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
+
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NotNull Call<ResponseBody> call, @NotNull Response<ResponseBody> response) {
@@ -87,6 +94,8 @@ public class StatusActivity extends AppCompatActivity {
 
                         if (appointments.isEmpty()) {
                             recyclerView.setVisibility(View.GONE); // Hide RecyclerView if no data
+                            noDataCardView.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
                             Toast.makeText(StatusActivity.this, "No appointments found", Toast.LENGTH_SHORT).show();
                         } else {
                             recyclerView.setVisibility(View.VISIBLE); // Show RecyclerView if data available
@@ -98,9 +107,12 @@ public class StatusActivity extends AppCompatActivity {
                         e.printStackTrace();
                         Toast.makeText(StatusActivity.this, "Failed to process response", Toast.LENGTH_SHORT).show();
                         Log.e("StatusActivity", "Failed to parse JSON response", e);
+                        noDataCardView.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
                     }
                 } else {
                     progressBar.setVisibility(View.GONE);
+                    noDataCardView.setVisibility(View.VISIBLE);
                     Toast.makeText(StatusActivity.this, "Failed to get status data", Toast.LENGTH_SHORT).show();
                     Log.e("StatusActivity", "HTTP error: " + response.code());
                 }
@@ -110,6 +122,7 @@ public class StatusActivity extends AppCompatActivity {
             public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
                 progressBar.setVisibility(View.GONE);
                 Toast.makeText(StatusActivity.this, "Network error", Toast.LENGTH_SHORT).show();
+                noDataCardView.setVisibility(View.VISIBLE);
                 Log.e("StatusActivity", "Network error", t);
             }
         });

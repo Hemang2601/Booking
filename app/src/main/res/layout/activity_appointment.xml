@@ -35,7 +35,7 @@
             <!-- Contents inside the CardView, you can customize this as needed -->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="85dp"
+                android:layout_height="90dp"
                 android:padding="16dp"
                 >
 

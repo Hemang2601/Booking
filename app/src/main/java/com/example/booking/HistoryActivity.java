@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,6 +36,7 @@ public class HistoryActivity extends AppCompatActivity {
     private HistoryAdapter historyAdapter;
     private List<History> histories; // Changed to History
     private ProgressBar progressBar;
+    private CardView noDataCardView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,7 @@ public class HistoryActivity extends AppCompatActivity {
         historyAdapter = new HistoryAdapter(histories); // Changed to History
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(historyAdapter);
+        noDataCardView = findViewById(R.id.noDatacardView);
 
         // Retrieve user_id and username from Intent extras
         String userId = getIntent().getStringExtra("user_id");
@@ -61,6 +64,7 @@ public class HistoryActivity extends AppCompatActivity {
 
         // Call API to get history data
         progressBar.setVisibility(View.VISIBLE);
+        noDataCardView.setVisibility(View.GONE);
         getHistoryData(userId);
     }
 
@@ -100,6 +104,8 @@ public class HistoryActivity extends AppCompatActivity {
                         if (histories.isEmpty()) {
                             recyclerView.setVisibility(View.GONE); // Hide RecyclerView if no data
                             Toast.makeText(HistoryActivity.this, "No history found", Toast.LENGTH_SHORT).show();
+                            noDataCardView.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
                         } else {
                             recyclerView.setVisibility(View.VISIBLE); // Show RecyclerView if data available
                             historyAdapter = new HistoryAdapter(histories); // Changed to History
@@ -110,16 +116,21 @@ public class HistoryActivity extends AppCompatActivity {
                         e.printStackTrace();
                         Toast.makeText(HistoryActivity.this, "Failed to process response", Toast.LENGTH_SHORT).show();
                         Log.e(TAG, "Failed to parse JSON response", e); // Changed to TAG
+                        noDataCardView.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
                     }
                 } else {
                     Toast.makeText(HistoryActivity.this, "Failed to get history data", Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "HTTP error: " + response.code()); // Changed to TAG
+                    noDataCardView.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<ResponseBody> call, @NotNull Throwable t) {
-                progressBar.setVisibility(View.GONE); // Hide progressBar
+                noDataCardView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(HistoryActivity.this, "Network error", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "Network error", t); // Changed to TAG
             }

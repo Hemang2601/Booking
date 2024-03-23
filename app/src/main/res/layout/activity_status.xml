@@ -33,7 +33,7 @@
             <!-- Contents inside the CardView, you can customize this as needed -->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="85dp"
+                android:layout_height="90dp"
                 android:padding="16dp"
                 >
 
@@ -98,8 +98,36 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
-            android:visibility="visible"
+            android:visibility="gone"
             android:elevation="20dp" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/noDatacardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/appointmentCardView"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="30dp"
+            android:visibility="visible"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp">
+
+            <!-- Add a TextView for displaying "Data Not Found" message -->
+            <TextView
+                android:id="@+id/noDataTextView"
+                android:layout_gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/notfound"
+                 android:drawablePadding="8dp"
+                android:text="Data Not Found"
+                android:gravity="center"
+                android:textSize="18sp" />
+        </androidx.cardview.widget.CardView>
+
+
 
 
         <View

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +35,7 @@ public class ProfileActivity extends AppCompatActivity {
     private EditText newPasswordEditText;
     private Button changePasswordButton;
     private ProgressBar progressBar;
+    private CardView noDataCardView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class ProfileActivity extends AppCompatActivity {
         newPasswordEditText = findViewById(R.id.newPasswordEditText);
         changePasswordButton = findViewById(R.id.changePasswordButton);
         progressBar = findViewById(R.id.progressBar);
+        noDataCardView = findViewById(R.id.noDatacardView);
 
         // Retrieve user_id and username from Intent extras
         String userId = getIntent().getStringExtra("user_id");
@@ -108,6 +111,7 @@ public class ProfileActivity extends AppCompatActivity {
     private void fetchUserDataWithDelay(String userId) {
         // Show loader after a delay of 2 seconds
         progressBar.setVisibility(View.VISIBLE);
+        noDataCardView.setVisibility(View.GONE);
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
@@ -159,22 +163,29 @@ public class ProfileActivity extends AppCompatActivity {
                         } else {
                             // Handle the case where "user_id" key is missing in the JSON response
                             Log.e("UserData", "No user_id found in JSON response");
+                            progressBar.setVisibility(View.GONE);
+                            noDataCardView.setVisibility(View.VISIBLE);
                             // Show an error message or handle the situation accordingly
                         }
                     } catch (IOException | JSONException e) {
                         e.printStackTrace();
                         // Handle error parsing response body
+                        progressBar.setVisibility(View.GONE);
+                        noDataCardView.setVisibility(View.VISIBLE);
                     }
                 } else {
                     // Handle error response
                     Toast.makeText(ProfileActivity.this, "Failed to fetch user data", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                    noDataCardView.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 // Handle failure, such as network issues
-                progressBar.setVisibility(View.GONE); // Hide the progress bar
+                progressBar.setVisibility(View.GONE);
+                noDataCardView.setVisibility(View.VISIBLE);
                 Toast.makeText(ProfileActivity.this, "Network error", Toast.LENGTH_SHORT).show();
             }
         });
